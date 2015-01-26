@@ -9,19 +9,27 @@ import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
 import android.util.Log;
 import android.view.Surface;
+import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 //http://www.mailinglistarchive.com/html/android-group-japan@googlegroups.com/2013-01/msg00229.html
 
 public class MainActivity extends Activity implements TextureView.SurfaceTextureListener {
 	private static final String TAG = "MyActivity";
 
-	private static final String RIGHT_MP4_FILE  = "Movies/r.MP4";
-	private static final String VIDEO_URL = 
-			System.getenv("EXTERNAL_STORAGE") + "/" + RIGHT_MP4_FILE;
-	private TextureView textureView;
+	private static final String UP_MP4_FILE  = "video/up.MP4";
+	private static final String UP_VIDEO_URL =
+			System.getenv("EXTERNAL_STORAGE") + "/" + UP_MP4_FILE;
+	private TextureView textureViewUp;
+
+    private static final String DOWN_MP4_FILE  = "video/down.MP4";
+    private static final String DOWN_VIDEO_URL =
+            System.getenv("EXTERNAL_STORAGE") + "/" + DOWN_MP4_FILE;
+    private TextureView textureViewDown;
+
 	private float dig=0;
 	
 	@Override
@@ -36,21 +44,20 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         /* No window title */
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        textureView = new TextureView(this);
-		textureView.setSurfaceTextureListener(this);
-		
-		textureView.setRotation(0);
-/*		dig = (float) 5;
-		textureView.setRotation(dig*0);
-		textureView.setRotationX(dig*6);
-		textureView.setRotationY(dig*9);
-*/
-		setContentView(textureView);
+        setContentView(R.layout.activity_main);
+
+        textureViewUp = (TextureView) findViewById(R.id.textureViewUp);
+        textureViewUp.setSurfaceTextureListener(this);
+        textureViewUp.setRotation(dig);
+
+        textureViewDown = (TextureView) findViewById(R.id.textureViewDown);
+        textureViewDown.setSurfaceTextureListener(this);
+        textureViewDown.setRotation(dig);
 	}
 
 	@Override
 	public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-		Log.i(TAG, "enter onSurfaceTextureAvailable()");
+		Log.i(TAG, "enter onSurfaceTextureAvailable() " + surfaceTexture);
 
 		MediaPlayer player = new MediaPlayer();
 		player.setLooping(true);
@@ -59,7 +66,11 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 		player.setSurface(surface);
 
 		try {
-			player.setDataSource(VIDEO_URL);
+            if(surfaceTexture==textureViewDown.getSurfaceTexture()) {
+                player.setDataSource(DOWN_VIDEO_URL);
+            } else {
+                player.setDataSource(UP_VIDEO_URL);
+            }
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -84,11 +95,14 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 	@Override
 	public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 		dig+=0.1;
-		textureView.setRotation(dig*0);
-		textureView.setRotationX(dig*6);
-		textureView.setRotationY(dig*9);
-       /* */
-    }
+		textureViewUp.setRotation(dig*0);
+		textureViewUp.setRotationX(dig*0);
+		textureViewUp.setRotationY(dig*3);
+
+        textureViewDown.setRotation(dig*0);
+        textureViewDown.setRotationX(dig*3);
+        textureViewDown.setRotationY(dig*0);
+	}
 
 	@Override
 	public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) { 
