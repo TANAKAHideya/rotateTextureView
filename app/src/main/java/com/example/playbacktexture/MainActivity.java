@@ -25,13 +25,25 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 			System.getenv("EXTERNAL_STORAGE") + "/" + UP_MP4_FILE;
 	private TextureView textureViewUp;
 
+    private static final String MID_MP4_FILE  = "video/mid.MP4";
+    private static final String MID_VIDEO_URL =
+            System.getenv("EXTERNAL_STORAGE") + "/" + MID_MP4_FILE;
+    private TextureView textureViewMid;
+
     private static final String DOWN_MP4_FILE  = "video/down.MP4";
     private static final String DOWN_VIDEO_URL =
             System.getenv("EXTERNAL_STORAGE") + "/" + DOWN_MP4_FILE;
     private TextureView textureViewDown;
 
+    private static final String RIGHT_MP4_FILE  = "video/right.MP4";
+    private static final String RIGHT_VIDEO_URL =
+            System.getenv("EXTERNAL_STORAGE") + "/" + RIGHT_MP4_FILE;
+    private TextureView textureViewRight;
+
 	private float dig=0;
-	
+    private float scale=1;
+    private float translation=0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,9 +62,17 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         textureViewUp.setSurfaceTextureListener(this);
         textureViewUp.setRotation(dig);
 
+        textureViewMid = (TextureView) findViewById(R.id.textureViewMid);
+        textureViewMid.setSurfaceTextureListener(this);
+        textureViewMid.setRotation(dig);
+
         textureViewDown = (TextureView) findViewById(R.id.textureViewDown);
         textureViewDown.setSurfaceTextureListener(this);
         textureViewDown.setRotation(dig);
+
+        textureViewRight = (TextureView) findViewById(R.id.textureViewRight);
+        textureViewRight.setSurfaceTextureListener(this);
+        textureViewRight.setRotation(dig);
 	}
 
 	@Override
@@ -68,8 +88,14 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 		try {
             if(surfaceTexture==textureViewDown.getSurfaceTexture()) {
                 player.setDataSource(DOWN_VIDEO_URL);
-            } else {
+            } else
+            if(surfaceTexture==textureViewMid.getSurfaceTexture())  {
+                player.setDataSource(MID_VIDEO_URL);
+            } else
+            if(surfaceTexture==textureViewUp.getSurfaceTexture()) {
                 player.setDataSource(UP_VIDEO_URL);
+            } else {
+                player.setDataSource(RIGHT_VIDEO_URL);
             }
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -95,13 +121,32 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 	@Override
 	public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 		dig+=0.1;
+
+        scale -= 0.002;
+        if (scale <=0 ) scale=1;
+
+        translation += 0.1;
+        if (translation >=320) translation=0;
+
 		textureViewUp.setRotation(dig*0);
 		textureViewUp.setRotationX(dig*0);
 		textureViewUp.setRotationY(dig*3);
+        textureViewUp.setTranslationY(translation);
+
+        textureViewMid.setRotation(dig*3);
+        textureViewMid.setRotationX(dig*0);
+        textureViewMid.setRotationY(dig*0);
+        textureViewMid.setScaleX(scale);
+        textureViewMid.setScaleY(scale);
 
         textureViewDown.setRotation(dig*0);
         textureViewDown.setRotationX(dig*3);
         textureViewDown.setRotationY(dig*0);
+        textureViewDown.setTranslationX(translation);
+
+        textureViewRight.setRotation(dig*1);
+        textureViewRight.setRotationX(dig*1);
+        textureViewRight.setRotationY(dig*1);
 	}
 
 	@Override
