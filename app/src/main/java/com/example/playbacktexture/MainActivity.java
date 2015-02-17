@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 		//getWindow().setFormat(PixelFormat.TRANSPARENT);
 		getWindow().setFormat(PixelFormat.RGBX_8888);
         /* No window title */
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_main);
 
@@ -140,9 +140,9 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         textureViewMid.setScaleY(scale);
 
         textureViewDown.setRotation(dig*0);
-        textureViewDown.setRotationX(dig*3);
-        textureViewDown.setRotationY(dig*0);
-        textureViewDown.setTranslationX(translation);
+        textureViewDown.setRotationX(dig*0);
+        textureViewDown.setRotationY(dig*3);
+        //textureViewDown.setTranslationX(translation);
 
         textureViewRight.setRotation(dig*1);
         textureViewRight.setRotationX(dig*1);
