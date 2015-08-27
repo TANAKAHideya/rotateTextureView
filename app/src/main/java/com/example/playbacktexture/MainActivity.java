@@ -2,18 +2,21 @@ package com.example.playbacktexture;
 
 import java.io.IOException;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
 import android.util.Log;
+import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.hardware.display.DisplayManager;
 
 //http://www.mailinglistarchive.com/html/android-group-japan@googlegroups.com/2013-01/msg00229.html
 
@@ -57,6 +60,14 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_main);
+
+        // Get the display manager service.
+        DisplayManager mDisplayManager = (DisplayManager)getSystemService(Context.DISPLAY_SERVICE);
+        Display[] displays  = mDisplayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+        //for (int i=0;i<displays.length;i++){
+        //    DemoPresentation presentation = new DemoPresentation(this, displays[i]);
+        //    presentation.show();
+        //}
 
         textureViewUp = (TextureView) findViewById(R.id.textureViewUp);
         textureViewUp.setSurfaceTextureListener(this);
