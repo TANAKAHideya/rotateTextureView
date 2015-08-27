@@ -2,7 +2,10 @@ package com.example.playbacktexture;
 
 import java.io.IOException;
 
+import android.app.Presentation;
 import android.content.Context;
+import android.graphics.Point;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
@@ -11,11 +14,11 @@ import android.graphics.SurfaceTexture;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
-import android.view.SurfaceView;
+//import android.view.SurfaceView;
 import android.view.TextureView;
-import android.view.Window;
+//import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
+//import android.widget.LinearLayout;
 import android.hardware.display.DisplayManager;
 
 //http://www.mailinglistarchive.com/html/android-group-japan@googlegroups.com/2013-01/msg00229.html
@@ -64,10 +67,10 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         // Get the display manager service.
         DisplayManager mDisplayManager = (DisplayManager)getSystemService(Context.DISPLAY_SERVICE);
         Display[] displays  = mDisplayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
-        //for (int i=0;i<displays.length;i++){
-        //    DemoPresentation presentation = new DemoPresentation(this, displays[i]);
-        //    presentation.show();
-        //}
+        for (int i=0;i<displays.length;i++){
+            DemoPresentation presentation = new DemoPresentation(this, displays[i]);
+            presentation.show();
+        }
 
         textureViewUp = (TextureView) findViewById(R.id.textureViewUp);
         textureViewUp.setSurfaceTextureListener(this);
@@ -168,4 +171,40 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 	public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
 		return false;
 	}
+    /**
+     * The presentation to show on the secondary display.
+     *
+     * Note that the presentation display may have different metrics from the display on which
+     * the main activity is showing so we must be careful to use the presentation's
+     * own {@link Context} whenever we load resources.
+     */
+    private final class DemoPresentation extends Presentation {
+
+        public DemoPresentation(Context context, Display display) {
+            super(context, display);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            // Be sure to call the super class.
+            super.onCreate(savedInstanceState);
+
+            // Set the background to a random gradient.
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setShape(GradientDrawable.RECTANGLE);
+            drawable.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+
+            Point p = new Point();
+            getDisplay().getSize(p);
+            drawable.setGradientRadius(Math.max(p.x, p.y) / 2);
+
+            final int[] colors = new int[] {
+                    ((int) (Math.random() * Integer.MAX_VALUE)) | 0xFF000000,
+                    ((int) (Math.random() * Integer.MAX_VALUE)) | 0xFF000000 };
+            drawable.setColors(colors);
+
+            findViewById(android.R.id.content).setBackground(drawable);
+        }
+    }
+
 }
