@@ -1,2 +1,0 @@
-C:\Users\a5033576\AndroidStudioProjects\PlayBackTexture\app\build\intermediates\classes\debug
-C:\Users\a5033576\AndroidStudioProjects\PlayBackTexture\app\build\intermediates\pre-dexed\debug\support-v4-18.0.0-b6fed4468afd65dcae678271619904315bec2ebd.jar
