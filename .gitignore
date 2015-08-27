@@ -1,9 +1,13 @@
 # .gitignore
-/.gradle/2.2.1/taskArtifacts/
+/.gradle/
+/.idea/
 
 /app/build/generated
 /app/build/intermediates
 /app/build/tmp
+/app/build/outputs/logs/
 
 /build/
+/captures/
 /obj/
+
