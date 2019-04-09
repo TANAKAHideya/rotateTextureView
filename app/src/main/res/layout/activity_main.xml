@@ -2,56 +2,20 @@
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:columnCount="4"
-    android:rowCount="3" >
+    android:columnCount="2"
+    android:rowCount="2" >
 
     <TextureView
-        android:id="@+id/textureViewUp"
-        android:layout_width="320px"
-        android:layout_height="240px"
-        android:layout_gravity="left|top"
-        android:layout_column="0"
-        android:layout_row="0" />
-
-    <TextureView
-        android:id="@+id/textureViewMid"
-        android:layout_width="320px"
-        android:layout_height="240px"
-        android:layout_gravity="left|top"
-        android:layout_column="0"
-        android:layout_row="1" />
-
-    <TextureView
-        android:id="@+id/textureViewDown"
-        android:layout_width="320px"
-        android:layout_height="240px"
-        android:layout_gravity="left|top"
-        android:layout_column="0"
-        android:layout_row="2" />
-
-    <TextureView
-        android:id="@+id/textureViewRight"
+        android:id="@+id/textureView1"
         android:layout_width="960px"
-        android:layout_height="720px"
-        android:layout_gravity="left|top"
+        android:layout_height="540px"
         android:layout_row="0"
-        android:layout_column="1"
-        android:layout_rowSpan="3" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/buttonStart"
-        android:layout_row="0"
-        android:layout_column="2" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop"
-        android:id="@+id/buttonStop"
-        android:layout_row="0"
-        android:layout_column="3" />
+        android:layout_column="0" />
+    <TextureView
+        android:id="@+id/textureView2"
+        android:layout_width="960px"
+        android:layout_height="540px"
+        android:layout_row="1"
+        android:layout_column="1" />
 
 </GridLayout>

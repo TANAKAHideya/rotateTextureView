@@ -26,25 +26,13 @@ import android.hardware.display.DisplayManager;
 public class MainActivity extends Activity implements TextureView.SurfaceTextureListener {
 	private static final String TAG = "MyActivity";
 
-	private static final String UP_MP4_FILE  = "video/up.MP4";
-	private static final String UP_VIDEO_URL =
-			System.getenv("EXTERNAL_STORAGE") + "/" + UP_MP4_FILE;
-	private TextureView textureViewUp;
-
-    private static final String MID_MP4_FILE  = "video/mid.MP4";
-    private static final String MID_VIDEO_URL =
-            System.getenv("EXTERNAL_STORAGE") + "/" + MID_MP4_FILE;
-    private TextureView textureViewMid;
-
-    private static final String DOWN_MP4_FILE  = "video/down.MP4";
-    private static final String DOWN_VIDEO_URL =
-            System.getenv("EXTERNAL_STORAGE") + "/" + DOWN_MP4_FILE;
-    private TextureView textureViewDown;
-
-    private static final String RIGHT_MP4_FILE  = "video/right.MP4";
-    private static final String RIGHT_VIDEO_URL =
-            System.getenv("EXTERNAL_STORAGE") + "/" + RIGHT_MP4_FILE;
-    private TextureView textureViewRight;
+	private static final String MP4_FILE1  = "video/video.mp4";
+	private static final String VIDEO1_URL =
+			System.getenv("EXTERNAL_STORAGE") + "/" + MP4_FILE1;
+	private static final String MP4_FILE2  = "video/video.mp4";
+	private static final String VIDEO2_URL =
+			System.getenv("EXTERNAL_STORAGE") + "/" + MP4_FILE2;
+	private TextureView textureView1, textureView2;
 
 	private float dig=0;
     private float scale=1;
@@ -64,29 +52,13 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
         setContentView(R.layout.activity_main);
 
-        // Get the display manager service.
-        DisplayManager mDisplayManager = (DisplayManager)getSystemService(Context.DISPLAY_SERVICE);
-        Display[] displays  = mDisplayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
-        for (int i=0;i<displays.length;i++){
-            DemoPresentation presentation = new DemoPresentation(this, displays[i]);
-            presentation.show();
-        }
+        textureView1 = (TextureView) findViewById(R.id.textureView1);
+        textureView1.setSurfaceTextureListener(this);
+        textureView1.setRotation(dig);
 
-        textureViewUp = (TextureView) findViewById(R.id.textureViewUp);
-        textureViewUp.setSurfaceTextureListener(this);
-        textureViewUp.setRotation(dig);
-
-        textureViewMid = (TextureView) findViewById(R.id.textureViewMid);
-        textureViewMid.setSurfaceTextureListener(this);
-        textureViewMid.setRotation(dig);
-
-        textureViewDown = (TextureView) findViewById(R.id.textureViewDown);
-        textureViewDown.setSurfaceTextureListener(this);
-        textureViewDown.setRotation(dig);
-
-        textureViewRight = (TextureView) findViewById(R.id.textureViewRight);
-        textureViewRight.setSurfaceTextureListener(this);
-        textureViewRight.setRotation(dig);
+		textureView2 = (TextureView) findViewById(R.id.textureView2);
+		textureView2.setSurfaceTextureListener(this);
+		textureView2.setRotation(dig);
 	}
 
 	@Override
@@ -100,17 +72,11 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 		player.setSurface(surface);
 
 		try {
-            if(surfaceTexture==textureViewDown.getSurfaceTexture()) {
-                player.setDataSource(DOWN_VIDEO_URL);
-            } else
-            if(surfaceTexture==textureViewMid.getSurfaceTexture())  {
-                player.setDataSource(MID_VIDEO_URL);
-            } else
-            if(surfaceTexture==textureViewUp.getSurfaceTexture()) {
-                player.setDataSource(UP_VIDEO_URL);
+            if(surfaceTexture==textureView1.getSurfaceTexture()) {
+                player.setDataSource(VIDEO1_URL);
             } else {
-                player.setDataSource(RIGHT_VIDEO_URL);
-            }
+				player.setDataSource(VIDEO2_URL);
+			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -142,25 +108,13 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         translation += 0.1;
         if (translation >=320) translation=0;
 
-		textureViewUp.setRotation(dig*0);
-		textureViewUp.setRotationX(dig*0);
-		textureViewUp.setRotationY(dig*3);
-        textureViewUp.setTranslationY(translation);
+        //textureView1.setRotation(dig*1);
+        //textureView1.setRotationX(dig*1);
+        textureView1.setRotationY(dig* 1);
 
-        textureViewMid.setRotation(dig*3);
-        textureViewMid.setRotationX(dig*0);
-        textureViewMid.setRotationY(dig*0);
-        textureViewMid.setScaleX(scale);
-        textureViewMid.setScaleY(scale);
-
-        textureViewDown.setRotation(dig*0);
-        textureViewDown.setRotationX(dig*0);
-        textureViewDown.setRotationY(dig*3);
-        //textureViewDown.setTranslationX(translation);
-
-        textureViewRight.setRotation(dig*1);
-        textureViewRight.setRotationX(dig*1);
-        textureViewRight.setRotationY(dig*1);
+		//textureView2.setRotation(dig*1);
+		//textureView2.setRotationX(dig*1);
+		textureView2.setRotationY(dig*-1);
 	}
 
 	@Override
@@ -171,40 +125,4 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 	public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
 		return false;
 	}
-    /**
-     * The presentation to show on the secondary display.
-     *
-     * Note that the presentation display may have different metrics from the display on which
-     * the main activity is showing so we must be careful to use the presentation's
-     * own {@link Context} whenever we load resources.
-     */
-    private final class DemoPresentation extends Presentation {
-
-        public DemoPresentation(Context context, Display display) {
-            super(context, display);
-        }
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            // Be sure to call the super class.
-            super.onCreate(savedInstanceState);
-
-            // Set the background to a random gradient.
-            GradientDrawable drawable = new GradientDrawable();
-            drawable.setShape(GradientDrawable.RECTANGLE);
-            drawable.setGradientType(GradientDrawable.RADIAL_GRADIENT);
-
-            Point p = new Point();
-            getDisplay().getSize(p);
-            drawable.setGradientRadius(Math.max(p.x, p.y) / 2);
-
-            final int[] colors = new int[] {
-                    ((int) (Math.random() * Integer.MAX_VALUE)) | 0xFF000000,
-                    ((int) (Math.random() * Integer.MAX_VALUE)) | 0xFF000000 };
-            drawable.setColors(colors);
-
-            findViewById(android.R.id.content).setBackground(drawable);
-        }
-    }
-
 }
