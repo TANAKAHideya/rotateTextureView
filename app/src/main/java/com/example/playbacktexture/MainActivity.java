@@ -26,10 +26,10 @@ import android.hardware.display.DisplayManager;
 public class MainActivity extends Activity implements TextureView.SurfaceTextureListener {
 	private static final String TAG = "MyActivity";
 
-	private static final String MP4_FILE1  = "video/video.mp4";
+	private static final String MP4_FILE1  = "video/video0.mp4";
 	private static final String VIDEO1_URL =
 			System.getenv("EXTERNAL_STORAGE") + "/" + MP4_FILE1;
-	private static final String MP4_FILE2  = "video/video.mp4";
+	private static final String MP4_FILE2  = "video/video1.mp4";
 	private static final String VIDEO2_URL =
 			System.getenv("EXTERNAL_STORAGE") + "/" + MP4_FILE2;
 	private TextureView textureView1, textureView2;
